@@ -1,0 +1,96 @@
+<html lang="zh_cn">
+<head>
+    <meta charset="UTF-8">
+    <title>表单设置</title>
+    <link rel="stylesheet" href="layui-src/css/layui.css"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="bpmn-js/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="style/awesome/css/animate.css">
+    <link rel="stylesheet" href="style/awesome/css/style.css">
+<style>
+
+    body .demo-class .layui-layer-content {
+        padding: 3rem 3rem 0 3rem;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        height: 1px;
+    }
+
+    body .demo-class .layui-layer-btn {
+        margin-top: 0rem;
+    }
+    .layui-layer-btn .layui-layer-btn0 {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+    body .demo-class .layui-layer-btn a {
+        background: #ff6a00;
+        border: 0px;
+    }
+
+    body .demo-class .layui-layer-btn .layui-layer-btn1 {
+        background: #afb611;
+        border: 0px;
+    }
+
+    .form-control:focus, .single-line:focus {
+        border-color: #1890ff !important;
+    }
+
+</style>
+
+</head>
+<body>
+
+<script src="index.js"></script>
+
+</body>
+<script>
+    $(function () {
+        renderTable(null);
+    });
+
+    function renderTable(modelName,tableName) {
+        layui.use('table', function () {
+            var table = layui.table;
+            table2=table.render({
+                id: 'busTable',
+                elem: '#busTable'
+                , limit: 10,
+                height:500
+                , url: 'http://127.0.0.1:8082/fastflow-admin/form/bus/businessTable/listJson'
+                , page: {
+                    layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']//自定义分页布局
+                    , limits: [10, 20, 30]
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+                }, request: {
+                    pageName: 'page' //页码的参数名称，默认：page
+                    , limitName: 'limit', //每页数据量的参数名，默认：limit
+                },where :{
+                    'modelName':modelName,
+                    'tableName':tableName
+                },
+                cols: [[
+                    {type: 'radio'}
+                    // , {field: 'id', width: 80, title: 'ID'}
+                    , {field: 'description',  title: '描述'}
+                    , {field: 'modelName', title: '业务Key'}
+                    , {field: 'tableName', title: '表名'}
+                ]],
+            });
+
+
+
+
+        });
+    }
+
+</script>
+</html>

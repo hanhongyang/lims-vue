@@ -1,0 +1,86 @@
+<html lang="zh_cn">
+
+
+
+<link href="css/style.css?v=4.1.0" rel="stylesheet">
+<link href="bpmn-js/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style/awesome/css/font-awesome.css">
+<link rel="stylesheet" href="style/awesome/css/animate.css">
+<link rel="stylesheet" href="style/awesome/css/style.css">
+<div style="padding:10px;">
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th width="15%">
+                <span>条件表达式</span>
+            </th>
+            <td>
+                <div style="margin: 8px 0;">
+                    <a class="btn btn-primary btn-xs" title="条件脚本" ng-click="selectScript()">条件脚本</a>
+                    <a class="btn btn-primary btn-xs" title="可选变量" id="selectVarBtn"
+                       ng-click="showFlowMenu(this)">可选变量</a>
+
+                </div>
+                <!-- ngRepeat: inNode in bpmNodeDef.incomeNodes -->
+                <div ng-repeat="inNode in bpmNodeDef.incomeNodes" style="padding: 4px;" class="ng-scope">
+                    <!-- ngIf: inNode.type=='SIGNTASK' -->
+                    <!-- ngIf: inNode.type=='SIGNTASK' -->
+                    <!-- ngIf: inNode.type!='SIGNTASK' --><a ng-if="inNode.type!='SIGNTASK'" href="javascript:void(0);"
+                                                             ng-click="setEditorVal(1,1)" class="ng-binding ng-scope">用户任务4-通过</a>
+                    <!-- end ngIf: inNode.type!='SIGNTASK' -->
+                    <!-- ngIf: inNode.type!='SIGNTASK' --><a ng-if="inNode.type!='SIGNTASK'" href="javascript:void(0);"
+                                                             ng-click="setEditorVal(1,2)" class="ng-binding ng-scope">用户任务4-反对</a>
+                    <!-- end ngIf: inNode.type!='SIGNTASK' -->
+                    <br> 选择流程变量的时候，请注意光标位置。
+                </div><!-- end ngRepeat: inNode in bpmNodeDef.incomeNodes -->
+            </td>
+        </tr>
+        <!-- ngRepeat: outNode in bpmNodeDef.outcomeNodes -->
+        <tr ng-repeat="outNode in bpmNodeDef.outcomeNodes" class="ng-scope">
+            <th width="15%">
+                <span class="ng-binding">用户任务1</span>
+            </th>
+            <td>
+                <input type="hidden" name="task" value="UserTask1">
+                <textarea id="UserTask1" codemirror="true" mirrorheight="110px" name="condition" rows="3" cols="20"
+                          class="inputText ng-binding" style="display: none;">111111111</textarea>
+                <div class="CodeMirror-wrapping" style="position: relative; height: 110px;"><textarea tabindex="100000"
+                                                                                                      style="position: absolute; left: -10000px; width: 10px;"></textarea>
+                    <iframe frameborder="0" src="javascript:;"
+                            style="border: 0px; width: 100%; height: 100%; display: block;"></iframe>
+                </div>
+            </td>
+        </tr><!-- end ngRepeat: outNode in bpmNodeDef.outcomeNodes -->
+        <tr ng-repeat="outNode in bpmNodeDef.outcomeNodes" class="ng-scope">
+            <th width="15%">
+                <span class="ng-binding">用户任务2</span>
+            </th>
+            <td>
+                <input type="hidden" name="task" value="UserTask2">
+                <textarea id="UserTask2" codemirror="true" mirrorheight="110px" name="condition" rows="3" cols="20"
+                          class="inputText ng-binding" style="display: none;">scriptImpl.equals(cssq.get("qjsq").asText(),cssq.get("qjsq").asText())</textarea>
+                <div class="CodeMirror-wrapping" style="position: relative; height: 110px;"><textarea tabindex="100000"
+                                                                                                      style="position: absolute; left: -10000px; width: 10px;"></textarea>
+                    <iframe frameborder="0" src="javascript:;"
+                            style="border: 0px; width: 100%; height: 100%; display: block;"></iframe>
+                </div>
+            </td>
+        </tr><!-- end ngRepeat: outNode in bpmNodeDef.outcomeNodes -->
+        <tr ng-repeat="outNode in bpmNodeDef.outcomeNodes" class="ng-scope">
+            <th width="15%">
+                <span class="ng-binding">用户任务3</span>
+            </th>
+            <td>
+                <input type="hidden" name="task" value="UserTask3">
+                <textarea id="UserTask3" codemirror="true" mirrorheight="110px" name="condition" rows="3" cols="20"
+                          class="inputText ng-binding" style="display: none;"></textarea>
+                <div class="CodeMirror-wrapping" style="position: relative; height: 110px;"><textarea tabindex="100000"
+                                                                                                      style="position: absolute; left: -10000px; width: 10px;"></textarea>
+                    <iframe frameborder="0" src="javascript:;"
+                            style="border: 0px; width: 100%; height: 100%; display: block;"></iframe>
+                </div>
+            </td>
+        </tr><!-- end ngRepeat: outNode in bpmNodeDef.outcomeNodes -->
+        </tbody>
+    </table>
+</div>

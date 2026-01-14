@@ -1,0 +1,64 @@
+/* //table */
+
+.stickytable {
+  width: 98%;
+  margin: 10px auto;
+  color: #606266;
+}
+
+.sticky-table {
+  width: 100%;
+  position: relative;
+  border-collapse: collapse;
+  border-top: 1px solid #EBEEF5;
+  border-right: 1px solid #EBEEF5;
+  font-size: 14px;
+  overflow: auto;
+}
+
+.sticky-table table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.sticky-table td,
+.sticky-table th {
+  /* 设置td,th宽度高度 */
+  border-bottom: 1px solid #EBEEF5;
+  border-left: 1px solid #EBEEF5;
+  height: 35px;
+  padding: 5px;
+}
+
+.sticky-table th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  /* 首行永远固定在头部  */
+  background-color: #6a6a6a;
+  /*设置表头背景色*/
+}
+
+.sticky-table td:last-child,
+.sticky-table th:last-child {
+  position: sticky;
+  right: 0;
+  /* 首列永远固定在左侧 */
+  z-index: 1;
+  background-color: #eff3f8;
+}
+
+
+
+.sticky-table th:last-child {
+  z-index: 2;
+  /*表头的首列要在上面*/
+}
+
+.sticky-table th>div {
+  width: 100%;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<head>
+    <title>盘古BPM流程查看</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="css/diagram-js.css" />
+    <link rel="stylesheet" href="vendor/bpmn-font/css/bpmn-embedded.css" />
+    <link href="bpmn-js/css/font-awesome.css" rel="stylesheet">
+    <link href="bpmn-js/css/animate.css" rel="stylesheet">
+    <link href="bpmn-js/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="icon/icon/media/bpmnExt.css">
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="style/elements/iconfont.css">
+    <link rel="stylesheet" href="style/layui-src/css/layui.css">
+
+</head>
+
+<style>
+    .djs-palette {
+        display: none;
+    }
+
+    .flow-legend-div span {
+        margin: 0 10px 0 3px;
+        font-size: 12px;
+        font-weight: bold;
+        float: left;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .flow-legend-div div {
+        border: 1px solid #868686;
+        line-height: 10px;
+        width: 10px;
+        height: 10px;
+        float: left;
+        overflow: hidden;
+        margin-top: 3px;
+    }
+
+    @keyframes test {
+        to {
+            stroke-dashoffset: 100%;
+        }
+    }
+
+    @-webkit-keyframes test {
+        to {
+            stroke-dashoffset: 100%;
+        }
+    }
+
+    .node {
+        animation: test 18S linear infinite;
+        -webkit-animation: test 18S linear infinite;
+        animation-fill-mode: forwards;
+        -webkit-animation-fill-mode: forwards;
+        /*stroke-dasharray: 4px ,4px;*/
+    }
+
+    .djs-label {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        font-weight: normal !important;
+    }
+</style>
+
+<body class="shown animate">
+
+    <div class="content with-diagram" id="js-drop-zone"
+        style="float:left;position: fixed;height: 100%;border: 1px solid #e3e3e3;margin-top: 5px">
+
+        <div class="message error">
+            <div class="note">
+                <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+                <div class="details">
+                    <span>cause of the problem</span>
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="message intro">
+            <div class="note">
+                <a id="js-create-diagram" href></a> to get started.
+            </div>
+        </div>
+
+
+        <div class="message error">
+            <div class="note">
+                <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+                <div class="details">
+                    <span>Import Error Details</span>
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas" id="js-canvas">
+        </div>
+        <div class="canvas" id="js-canvas3">
+        </div>
+
+        <div id="hitable" style="width: 100%;position: absolute;">
+            <table class="layui-table layui-form" lay-filter="log" id="log">
+
+            </table>
+        </div>
+    </div>
+
+
+</body>
+
+<script src="index.js"></script>
+
+</html>

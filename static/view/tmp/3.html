@@ -1,0 +1,775 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="http://127.0.0.1:8080/kie-drools-wb-7.11.0.Final-tomcat8/org.kie.workbench.drools.KIEDroolsWebapp/css/patternfly.min.css">
+    <style>
+        *, :after, :before {
+            box-sizing: border-box;
+        }
+
+        .kie-palette {
+            border-collapse: collapse;
+            overflow: visible;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 44px;
+            z-index: 1030;
+        }
+
+        .kie-palette .list-group {
+            position: relative;
+            border-top: none;
+            box-shadow: 0 2px 6px rgba(3, 3, 3, 0.2);
+        }
+
+        .kie-palette .list-group-item {
+            border-width: 0;
+            display: inline-block;
+            padding: 0;
+            position: static;
+        }
+
+        .kie-palette .list-group-item > button {
+            color: #030303;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 400;
+            height: 44px;
+            padding: 0;
+            text-decoration: none;
+            white-space: nowrap;
+            width: 44px;
+            box-shadow: none;
+        }
+
+        .kie-palette .list-group-item > a {
+            cursor: pointer;
+        }
+
+        .kie-palette .list-group-item.kie-palette-show-flyout > .kie-palette-flyout {
+            display: block;
+        }
+
+        .kie-palette .list-group-item.kie-palette-show-flyout > button {
+            background-color: #fff;
+            background-image: none;
+        }
+
+        .kie-palette .list-group-item .list-group-item-value {
+            display: block;
+            line-height: 2em;
+            max-width: 13em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @supports (display: flex) {
+            .kie-palette .list-group-item .list-group-item-value {
+                flex: 1;
+                max-width: none;
+                padding-right: 1em;
+            }
+        }
+
+        .kie-palette-flyout {
+            background-color: #fff;
+            border-top: 1px solid #bbb;
+            border-right: 1px solid #bbb;
+            border-bottom: 1px solid #bbb;
+            box-shadow: 0 2px 6px rgba(3, 3, 3, 0.2);
+            display: none;
+            left: 44px;
+            max-height: 100%;
+            min-height: 100%;
+            overflow-x: visible;
+            overflow-y: auto;
+            padding: 15px 15px 15px 10px;
+            position: absolute;
+            top: 0;
+        }
+
+        .kie-palette-flyout h5 {
+            color: #72767b;
+            cursor: default;
+            font-size: 12px;
+            margin-top: 0;
+            padding-left: 10px;
+            text-transform: uppercase;
+            margin-right: 25px;
+        }
+
+        .kie-palette-flyout .list-group {
+            box-shadow: none;
+        }
+
+        .kie-palette-flyout .list-group-item {
+            background-color: #fff;
+            float: none;
+            border-width: 0;
+            padding-left: 10px;
+            margin-bottom: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .kie-palette-flyout .list-group-item > a {
+            color: #030303;
+            font-size: 12px;
+            font-weight: 400;
+            height: auto;
+            padding: 0;
+            text-decoration: none;
+            width: 190px;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        @supports (display: flex) {
+            .kie-palette-flyout .list-group-item > a {
+                display: flex;
+            }
+        }
+
+        .kie-palette-flyout .list-group-item > a img {
+            margin-right: 1rem;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .kie-palette-flyout .list-group-item:hover {
+            background-color: #def3ff;
+        }
+
+        .kie-palette-flyout .list-group-item:hover > a {
+            color: #030303;
+            font-weight: 400;
+        }
+
+        .kie-palette-icon {
+            height: 21px;
+        }
+
+        .kie-palette-flyout-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .kie-palette-flyout__close {
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .kie-palette-flyout__btn-link--close {
+            color: #030303;
+            min-width: 40px;
+            min-height: 40px;
+        }
+
+    </style>
+</head>
+<body>
+<div data-field="diagramContainer" class="diagram-container">
+    <div data-field="palettePanel" class="palette-panel" style="top: 0px; left: 0px;">
+        <div class="kie-palette" data-field="kie-palette" data-i18n-prefix="BS3PaletteWidgetViewImpl.">
+            <ul class="list-group">
+                <li class="list-group-item kie-palette-show-flyout" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="Start Events">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+                                <div data-field="icon" class="glyph-icon-svg-position" style="width: 21px; height: 21px;">
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            Start
+                            Events</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -315px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -336px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start Signal</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -357px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start Timer</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -735px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start Conditional</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -273px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start Error</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -777px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start Escalation</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -294px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Start Message</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="Intermediate Events">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+                                <div data-field="icon" class="glyph-icon-svg-position" style="width: 21px; height: 21px;">
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            Catching
+                            Intermediate
+                            Events</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -252px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Timer</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -147px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Error</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -756px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Conditional</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -210px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Signal</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -798px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Escalation</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -168px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Message</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <h5>
+                            Throwing
+                            Intermediate
+                            Events</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -231px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Signal</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -819px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Escalation</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -189px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Intermediate Message</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="End Events">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+                                <div data-field="icon" class="glyph-icon-svg-position" style="width: 21px; height: 21px;">
+                                    <!--
+~ Copyright 2018 Red Hat, Inc. and/or its affiliates.
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~     http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            End
+                            Events</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -84px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">End</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -840px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">End Escalation</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -42px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">End Error</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -126px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">End Terminate</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -63px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">End Message</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -105px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">End Signal</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="Activities">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+                                <div data-field="icon" class="glyph-icon-svg-position" style="width: 21px; height: 21px;">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            Tasks</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -630px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Business Rule</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -714px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">User</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -672px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Script</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="SubProcesses">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+                                <div data-field="icon" class="glyph-icon-svg-position" style="width: 21px; height: 21px;">
+                                    <!--
+~ Copyright 2018 Red Hat, Inc. and/or its affiliates.
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~     http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            Subprocesses</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -525px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Embedded</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -504px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Adhoc</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -588px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Reusable</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -546px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Event</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -567px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Multiple Instance</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="Gateways">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            Gateways</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -483px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Parallel</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -420px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Exclusive</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px -441px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Inclusive</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="Containers">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            Containers</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="WidgetElementRendererViewImpl.">
+    <div data-field="content">
+    <div class="GILV2QVBBR" style="background-position: 0px 0px;"></div></div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Lane</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="list-group-item" data-field="listGroupItem" data-i18n-prefix="DefinitionPaletteCategoryWidgetViewImpl.">
+                    <button data-field="categoryIcon" class="btn btn-default kie-palette-category-widget-button" title="Service Tasks">
+                        <div data-i18n-prefix="ImageElementRendererViewImpl.">
+                            <div data-field="content" class="glyph-icon-renderer-svg-content">
+                                <div data-field="icon" class="glyph-icon-svg-position" style="width: 21px; height: 21px;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                    <div data-field="floatingPanel" class="kie-palette-flyout">
+                        <div class="kie-palette-flyout__close">
+                            <button data-field="closeCategoryButton" class="btn btn-link btn-large kie-palette-flyout__btn-link--close">
+                                <span class="pficon pficon-close"></span>
+                            </button>
+                        </div>
+                        <h5>
+                            ServiceTasks</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="ImageElementRendererViewImpl.">
+    <div data-field="content" class="glyph-icon-renderer-svg-content">
+        <div data-field="icon" class="glyph-icon-svg-position" style="width: 16px; height: 16px;">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAC7mlDQ1BJQ0MgUHJvZmlsZQAAeAGFVM9rE0EU/jZuqdAiCFprDrJ4kCJJWatoRdQ2/RFiawzbH7ZFkGQzSdZuNuvuJrWliOTi0SreRe2hB/+AHnrwZC9KhVpFKN6rKGKhFy3xzW5MtqXqwM5+8943731vdt8ADXLSNPWABOQNx1KiEWlsfEJq/IgAjqIJQTQlVdvsTiQGQYNz+Xvn2HoPgVtWw3v7d7J3rZrStpoHhP1A4Eea2Sqw7xdxClkSAog836Epx3QI3+PY8uyPOU55eMG1Dys9xFkifEA1Lc5/TbhTzSXTQINIOJT1cVI+nNeLlNcdB2luZsbIEL1PkKa7zO6rYqGcTvYOkL2d9H5Os94+wiHCCxmtP0a4jZ71jNU/4mHhpObEhj0cGDX0+GAVtxqp+DXCFF8QTSeiVHHZLg3xmK79VvJKgnCQOMpkYYBzWkhP10xu+LqHBX0m1xOv4ndWUeF5jxNn3tTd70XaAq8wDh0MGgyaDUhQEEUEYZiwUECGPBoxNLJyPyOrBhuTezJ1JGq7dGJEsUF7Ntw9t1Gk3Tz+KCJxlEO1CJL8Qf4qr8lP5Xn5y1yw2Fb3lK2bmrry4DvF5Zm5Gh7X08jjc01efJXUdpNXR5aseXq8muwaP+xXlzHmgjWPxHOw+/EtX5XMlymMFMXjVfPqS4R1WjE3359sfzs94i7PLrXWc62JizdWm5dn/WpI++6qvJPmVflPXvXx/GfNxGPiKTEmdornIYmXxS7xkthLqwviYG3HCJ2VhinSbZH6JNVgYJq89S9dP1t4vUZ/DPVRlBnM0lSJ93/CKmQ0nbkOb/qP28f8F+T3iuefKAIvbODImbptU3HvEKFlpW5zrgIXv9F98LZua6N+OPwEWDyrFq1SNZ8gvAEcdod6HugpmNOWls05Uocsn5O66cpiUsxQ20NSUtcl12VLFrOZVWLpdtiZ0x1uHKE5QvfEp0plk/qv8RGw/bBS+fmsUtl+ThrWgZf6b8C8/UXAeIuJAAAACXBIWXMAAAsTAAALEwEAmpwYAAADrUlEQVQ4EYVUfUxTVxT/3de+wqNUJDgU+ZRiC+goKyIZy5wSSBB04WMMZ1yiy5Y4kpksWxwxRCdmxLk/JCQzS8yYMVsym6HDwDAoYHHgClhb+QhlRUQYwVrBFUof7ePdvdfMfbCYndx7cz/y+52T3zn3gFKK500TNSnSys4Yn/f+7J7BKvuw8FaMvf/hFnhdBsepjSYqkubakz1mgf8tz9oz8erhI23pqyAgMtuftqZpsu9o+7WpkuvNzsAE6yfwhOnALHLxRCOuj/I55qGiudEpyr05ic0VB4xnJJxbxirlhRDCfvfNwDFeraoSXESzTrMRx8uKkJbGw3aHImAEw4yHpl34vhV0CVgMYaquTFhQuinnaBAvR1L1Y2tWoMd/yfcEWhKqpq/vjiX5uQFMzjzC6JCI+BcJNvti0e0jaL0zTYX5JcLF0DGmK6z0K9PukaAmBwtTImyzTr8z1oM9RfFkh/YpZmdL4Oh6E+o1DfDerAB1v4WClwgKs1LJyJAHA233hbc/To2SIwmSGJdDIc77cbC8GPk5AhYHD2P4bhIqd9Rjb/ExxOU2wB7pha/7a+wMDcM7BwrBcX7ySoaK/Yukrn76hFvF6fl+Hva2GSyFD+GNffvBL+iBwDLS+TTEoRL3xs/Cqb6LFa0A9gmnb//8wQmZRGkorzeOiUIy7/EynCSzixOxNLMHOksmBiiPl3tlZxKRsgy/csOYGxERsgiY6QJjsd1O1pX3GpmafbH240ey+zK1ap9Pymp0QIEktCBEdRk5lAMU8uAwEnIZ4UIL4gJKBESCjGS1T8bVKJLswWr102kDimptv9jcdO7xPdpxUU8t56Lo6O1qKtYP0NHeanpDOptHo6l12kbPn3fTrZW1Nirh5OwGhWVvUZrOqPDlpVZc71EicVsjNuQp0Gk9jeGnp9A5eBqbNC8gXrwC6wCLCx0/weVXUXvXihDURF46m8d+3xmnVz2KWMFVxyRlkUC2b2vHukgX5jcIiFyuQnJBTNBBt/Sekh1GtGM61nR1cs6wK+Hvsv+20fpZeDTzQe/YuOZGnxfv5RdLlcxjmaFQSP4ys0NxTooUa8NRsEW7EP5YbKg4ZKyRg/jX33E2Wj9p6n9YWu1y+LeyfhANpxu87+UMERrRHvA5NrMqvLY+RbVre8IP+w9l1Ul4j0zynzZQ9lFH4mD3VIYsWl3nzabUki+mTn76szmw8CDPYnbmvft+S5YEY5+1geAH/udh9d5kMilQdvZ/+8kfxh8EsHymFKsAAAAASUVORK5CYII=" class="" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Rest</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="ImageElementRendererViewImpl.">
+    <div data-field="content" class="glyph-icon-renderer-svg-content">
+        <div data-field="icon" class="glyph-icon-svg-position" style="width: 16px; height: 16px;">
+        <img src="data:image/gif;base64,R0lGODlhEAAQANUAAChilmd9qW2DrXeMtJiYkZuajqGeiqZrEKehh6m30qyjhK1yErCmgbOpfrZ8FLmter2EFr+wd8HG2ca0ceDq9+Ps+Ojv+Ovx+fL1+vb4+/j5/Pvll/vusPvyufz62/797wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAACAALAAAAAAQABAAAAaAQJBwSCwaJ8ikclLUOJ9QJtEpqVolGekQAsl4v16tEPKBYKpnCSYC4ro/ZYx8/oB47vi7GcDHPBwdgYKBHA4DAgEXDQsbjY6NCxd8ABcMIAeYmI0HFp2eCkUHGwcVCQmlpwihpBUVFK2vBkWtprWmFbJEFK+7rrsUBUUEw8TFBUEAOw==" class="" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Email</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="ImageElementRendererViewImpl.">
+    <div data-field="content" class="glyph-icon-renderer-svg-content">
+        <div data-field="icon" class="glyph-icon-svg-position" style="width: 16px; height: 16px;">
+        <img src="data:image/png;base64,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" class="" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">WebService</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="ImageElementRendererViewImpl.">
+    <div data-field="content" class="glyph-icon-renderer-svg-content">
+        <div data-field="icon" class="glyph-icon-svg-position" style="width: 16px; height: 16px;">
+        <img src="data:image/gif;base64,R0lGODlhEAAQAMQAAG+Fr3CFr3yRuIOSsYaUroidwIuWrI+ZqJGlx5WdpZugoKGknaeomK6slLKvkL21idSyaNq9fN3o+ODIj+Ps+evx+vP2+/f4+/n6/AAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABkALAAAAAAQABAAAAVlYCaOZEk+aIqa4oO9MPSwLvxGsvlcwYUglwluRnJYjkiko9SwBCy/guDZKDEq2GyWUVpUApXotLIoKSjodFpRSlACFDGAkigdJHg8Gn8oGSQBEnISBiUEeYh4BCUDjY6PAyySIyEAOw==" class="" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">Log</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <h5>
+                            Decision
+                            tasks</h5>
+                        <ul class="list-group" data-i18n-prefix="DefinitionPaletteGroupWidgetViewImpl.">
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="ImageElementRendererViewImpl.">
+    <div data-field="content" class="glyph-icon-renderer-svg-content">
+        <div data-field="icon" class="glyph-icon-svg-position" style="width: 16px; height: 16px;">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABh0lEQVR42mNgIAj+M9Y71LOAcGjoKub/q0J5PtfzXPtSy/rhc7d6GGH9DPVM1clL/8NwZ+4SmS8NPJ++VDH8/1zN/Img9oq4JYeLoxb9h+Ga5GWbPlcx/gcZ8KWa+RdezbNbt+shawbh6qRlBZ9r2W+CDajneonXAJim2rTl95HFvywJ1f1Uz/Pkw1IbQYb6jJVhdRnLCx2AgYSsqC59eTjMgMq4hcI4bSmLWfIB7LeUZQfq6+tZyuIW15bHLqkrjV0M1lyfsWI+XmcWRS36B7OpLX+FD4qfoxf9urLqChshf/6BaegqWpuLbEBpzKIfhKMpYelJSOguPVifMJ+jOGpxa0n0kjZ4qKcuLcJrQFvuKtHa9KVF6IFYGb+kBmZIWdJGXgZSQWhoKDPMgKqkpXswo5H3yYdpwGjEB/oqNnrAXRG7+CMItxetbSA6IYFAVdKy68gBWx6/+D/RSRmclYBhg2xAc87KQpIyEwgs7tuhsnDKHjUQBmXvz71q4Z+bBP9/7tGIBADeDhPgmEQv1gAAAABJRU5ErkJggg==" class="" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">DecisionTask</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item kie-palette-item-list-item" data-i18n-prefix="DefinitionPaletteItemWidgetViewImpl.">
+                                <a data-field="itemAnchor" class="kie-palette-item-anchor-spacer" title="">
+        <span data-field="icon" class="kie-palette-item-icon-spacer"><div data-i18n-prefix="ImageElementRendererViewImpl.">
+    <div data-field="content" class="glyph-icon-renderer-svg-content">
+        <div data-field="icon" class="glyph-icon-svg-position" style="width: 16px; height: 16px;">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACiElEQVR42oWTXUiTURjHZ1ZKWHmTFH3RRVdddONNpsNWLkmd+tqHCjOIklZgUzZhy/UxhXSGyiqKvshAStK1uggi6CYhFnUhE2dgKK+G5cBJ7z7c2nn+nZ0ZflzMAwfel/f8f8/z/5/nVTHGiCkBYmGFWH8bscoMYi/sxBbCxOb9RPx7qqWi35NEXXUg0yGw8/uAMhWoPB2spQh06QBIHkWqpYI8SlS3QwiFWJe29FyWBnJ3pwaQu4vo3J6kyJiL4NQ4op53YKeyOIBDvrxdowPuWVSqyoQyIyMUCiGo/EG8VbfYEbfTaxGHIwsxsVcCbtcQ6daBKtaD/ZqAoigIc0C0RZsE8E6Cz6wIRhZw8EI71MYeTM3OYfynHzxebmFWJla/XxyOn92J2IMGRNsqASkD4GEqn17jCBflGjqRXnQFqqMN2Fxmxt6a65j2Bzhg7DORPifpdzG85TvSfwu7qm1CeLihCzWtT5FVasK2KiuGvD+4hb8xoo/PQQMOUK9ViFh1NmhoAPE79bjZ8wQZxY3YUmqGf24egUAAF7tfCuBWXTMHAPQ/EAoroPbTCD82w+PxgM8JpBtJQGZxE8YmpnnIYUi2h9hwvBFN912rAFzQ6XDAaDSioKAAHR0dGHS/wWXnK1Exu7wZOZJFZLGRAz589a0ExGIxaDQalJSUCEh+fj4MBgOM9wax+8w1bD95VYCOme+iwvYIo5MzS4BoNCqEeXl5GB4eFtdpt9vFe19fH/g/g973Hmw6YcK37/KyOVgExONxuFwuFBYWwul0Coher0dtbS28Xq84nLj3BGjlIC2zkKiq1WqhVqtF5QTMYrGsMcqrQvT5fHC73ZAkCSMjI5BlOSXgH5e1GrmCfrJvAAAAAElFTkSuQmCC" class="" style="width: 16px; height: 16px; position: absolute; top: 0px; left: 0px;"></div>
+    </div>
+</div></span>
+                                    <span class="list-group-item-value kie-palette-item-value-spacer" data-field="name">BusinessRuleTask</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div data-field="canvasPanel" class="canvas-panel">
+    </div>
+</div>
+
+</body></html>

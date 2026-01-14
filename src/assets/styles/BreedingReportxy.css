@@ -1,0 +1,890 @@
+﻿@charset "utf-8";
+
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: 微软雅黑, 宋体, Arial, Helvetica, Verdana, sans-serif;
+  color: #000000;
+}
+
+#printId {
+  min-width: 596pt;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sta-main {
+  min-height: 832pt;
+  width: 596pt;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #ebeef5;
+}
+
+.PageStyle {
+  text-align: center;
+  width: 98%;
+  height: 1200px;
+  padding: 6%;
+  margin: auto;
+  background: white;
+}
+
+
+
+
+
+
+
+
+.biaotihd {
+  width: 100%;
+  height: 120px;
+
+}
+
+.biaotihdflex {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.titlebold {
+  font-size: 40px;
+  /* font-weight: bold; */
+  padding-top: 60px;
+}
+
+.titlebold1 {
+  font-size: 30px;
+  font-weight: bold;
+  /* margin-top: 30px; */
+}
+
+.lefttitle {
+  text-align: left;
+  margin-bottom: 25px;
+}
+
+.gongsi {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.flex-line {
+  display: flex;
+  align-items: flex-end;
+}
+
+.content-line {
+  flex: 1;
+  position: relative;
+  display: inline-block;
+  margin-left: 4px;
+  text-align: center;
+  padding-bottom: 2px;
+  /* 控制横线与文字距离 */
+}
+
+.content-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #353131;
+}
+
+.dibu1 {
+  font-size: 20px;
+  /* font-weight: bold; */
+}
+
+.dibu2 {
+  font-size: 20px;
+  /* font-weight: bold; */
+  margin-bottom: 40px;
+}
+
+.font26 {
+  font-size: 26px;
+}
+
+.font24 {
+  font-size: 24px;
+}
+
+.font30 {
+  font-size: 30px;
+}
+
+.qm {
+  width: 100px;
+  height: 50px;
+  vertical-align: top
+}
+
+.blank-row {
+  vertical-align: top;
+}
+
+.report-container {
+  max-width: 900px;
+  margin: 50px auto;
+
+
+}
+
+.report-header {
+  text-align: left;
+  margin-bottom: 10px;
+
+}
+
+.report-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.report-subtitle {
+  font-size: 18px;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+.report-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.xfqm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.ttxf {
+  width: 33%;
+}
+
+.sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-size: 16px;
+
+}
+
+.sample-table th,
+.sample-table td {
+  border: 1px solid #000000;
+  padding: 10px 12px;
+  text-align: left;
+  color: #000000;
+  font-weight: normal;
+}
+
+.sample-table th {
+  /* background-color: #f2f6fc; */
+  /* font-weight: bold; */
+  width: 15%;
+  /* color: #2c3e50; */
+  text-align: center;
+}
+
+.sample-table td {
+  text-align: center;
+  width: 15%;
+  /* background-color: white; */
+}
+
+.colspan-cell {
+
+  /* font-weight: bold; */
+
+  text-align: left !important;
+
+}
+
+.report-footer {
+  margin-top: 30px;
+  text-align: right;
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.page-number {
+  margin-top: 5px;
+}
+
+@media print {
+  body {
+    background-color: white;
+    padding: 0;
+  }
+
+  .report-container {
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+.jcbgz {
+  width: 280px;
+  height: 100px;
+
+  margin-left: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* align-items: center; */
+
+}
+
+.sealpost {
+  position: relative;
+  top: 55px;
+  width: 100px;
+  height: 100px;
+  right: -150px;
+}
+
+.lineU {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  margin-top: 760px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 110px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.twoleft {
+  width: 49%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.font20 {
+  font-size: 20px;
+}
+
+.imgniu {
+  width: auto;
+  height: 120px;
+}
+
+.gongsi {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.gongsift {
+  width: 100%;
+  /* height: 120px; */
+  position: relative;
+  bottom: -310px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.seal-corner {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  /* 关键：向上移动自身高度的50% */
+}
+
+
+
+.pagehead {
+  width: 96%;
+  height: 5%;
+  vertical-align: middle;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 3%;
+}
+
+.pageheadimg {
+  width: 100px;
+}
+
+.mulucontent {
+  font-size: 1.8rem;
+  height: 90%;
+}
+
+.CataLogClass {
+  font-size: 2.3rem;
+  margin: 20px 0 20px 0;
+  font-weight: 500;
+}
+
+.mulutext {
+  font-size: 20px;
+  height: 100%;
+  padding-left: 5%;
+  font-weight: 500;
+  line-height: 29px;
+}
+
+.muluspan {
+  width: 60px;
+  display: inline-block;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.content {
+  font-size: 14px;
+  height: 90%;
+  padding: 0 2%;
+}
+
+.PageCataLogClass {
+  font-size: 20px;
+  margin: 5px 0;
+  font-weight: 500;
+  text-align: left;
+}
+
+.page1div {
+  display: flex;
+  align-items: center;
+  height: 380px;
+  margin-bottom: 20px;
+  vertical-align: top;
+}
+
+.tablereport {
+  border: 1px solid #2c2c2c;
+  color: #333;
+  line-height: 27px;
+  border-top: 0;
+  border-left: 0;
+  width: 100%;
+}
+
+.tablereport tr td {
+  border: 1px solid #2c2c2c;
+  border-bottom: 0;
+  border-right: 0;
+  padding: 3px;
+}
+
+.styleDivContentoneDivTable .tablereport tr td {
+  border: 1px solid #2c2c2c;
+  border-bottom: 0;
+  border-right: 0;
+  padding: 1px 3px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.page1chart1 {
+  border: 2px #d3d3d3 solid;
+  margin-left: 3%;
+  width: 600px;
+  height: 350px;
+}
+
+.page1chart2 {
+  border: 2px #d3d3d3 solid;
+
+  width: 500px;
+  height: 350px;
+}
+
+.pageyhcontent {
+  width: 500px;
+  margin-right: 3%;
+}
+
+.Pageheadtitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.Page3Text {
+  font-size: 1.1rem;
+  margin: 30px 0 20px 0;
+  font-weight: 500;
+  text-align: left;
+}
+
+.Page3Content {
+  display: flex;
+  justify-content: space-between;
+  height: 90%;
+  padding: 0 5%;
+}
+
+.tixing {
+  width: 100%;
+  margin-top: 18px;
+  padding: 0 4%;
+}
+
+.tixing ul li {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 25px;
+}
+
+.tixing ul li span {
+  width: 105px;
+  font-size: 14px;
+  height: 25px;
+  float: left;
+  text-align: right;
+  padding-right: 0;
+}
+
+.tixing ul li a {
+  width: 50px;
+  float: left;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  height: 25px;
+  line-height: 25px;
+  border-left: 0px;
+  border-bottom: 0px;
+  background: none;
+  display: inline-block;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.tixing ul li:first-child .barzong {
+  border-top: 1px solid #000;
+}
+
+.barzong {
+  display: inline-block;
+  position: relative;
+  border-right: 1px solid #000;
+}
+
+.barzong a:first-child {
+  border-left: 1px solid #000;
+}
+
+.tixing ul li:last-child .barzong a {
+  border-bottom: 1px solid #000;
+}
+
+.txbar {
+  width: 50%;
+  position: absolute;
+  left: 250px;
+  top: 5px;
+  height: 15px;
+}
+
+.txbar1 {
+  width: 50%;
+  position: absolute;
+  right: 250px;
+  top: 5px;
+  text-align: right;
+  height: 12px;
+}
+
+.txbarall {
+  background: #99f;
+  height: 12px;
+  border: 1px solid #333;
+}
+
+.txbar1 .txbarall {
+  float: right;
+}
+
+.txbar1 font,
+.txbar font {
+  font-weight: bold;
+}
+
+.txbar .txbarall {
+  float: left;
+}
+
+.txbar font {
+  margin-left: 10px;
+  float: left;
+}
+
+.txbar1 font {
+  margin-right: 10px;
+  float: right;
+}
+
+.tixingnumb {
+  height: 4%;
+  width: 510px;
+  font-size: 1rem;
+  margin-left: 180px;
+}
+
+.tixingnumb div {
+  width: 50px;
+  text-align: right;
+  float: left;
+}
+
+.textcenter {
+  text-align: center;
+}
+
+.textleft {
+  text-align: left;
+}
+
+.textright {
+  text-align: right;
+}
+
+.vertical-text {
+  justify-content: center;
+
+  border: 1px solid #000;
+  height: 50%;
+  width: 98%;
+  border-left: 0;
+  text-align: center;
+  font-size: 18px;
+  border-left: 0;
+  padding: 20px 5px;
+}
+
+.styleDivTitle {
+  width: 100%;
+  height: 16%;
+}
+
+.styleDivContent {
+  width: 100%;
+  height: 25%;
+}
+
+.styleDivTitleHei {
+  width: 100%;
+  height: 20%;
+  border-bottom: 1px solid #000;
+}
+
+.styleDivTitleText {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.styleDivTitlechren {
+  background-color: rgba(0, 176, 240, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.styleDivTitlFlex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.styleDivTitlerf {
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.styleDivTitlBlue {
+  color: rgb(51, 51, 255);
+}
+
+.styleDivTitlRed {
+  color: rgb(255, 32, 32);
+}
+
+.styleDivContentonetitle {
+  font-size: 12px;
+  height: 10%;
+  font-weight: bold;
+}
+
+.styleDivContentoneContent {
+  width: 100%;
+  height: 90%;
+}
+
+.styleDivContentoneDivTitle {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.styleDivContentoneDivTable {
+  width: 100%;
+  height: 35%;
+}
+
+.styleDivContentoneDiv1 {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.styleDivContentoneDiv2 {
+  width: 28%;
+  height: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.styleDivContentoneimg {
+  height: 100%;
+  width: 27%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+  font-size: 0.5rem;
+}
+
+.styleDivContentoneimg>img {
+  width: 120px;
+  height: 120px;
+}
+
+.tablereport1 tr td:first-child {
+  border-left: 0;
+}
+
+.contbox {
+  border: 1px solid #000000;
+  height: 100%;
+  width: 100%;
+}
+
+.page12divUpTitle {
+  width: 20%;
+  height: 20%;
+  background-color: yellow;
+  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.pdfdown {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  margin-left: 325pt;
+
+  color: #fff;
+  padding: 0 10px;
+  line-height: 40px;
+  width: 90px;
+}
+
+.toptp {
+  top: auto;
+  bottom: 20px;
+  background: none;
+  border: 0;
+}
+
+.ohmain {
+  min-height: 842pt;
+  width: auto;
+  min-width: 596pt;
+  display: inline-block;
+  height: auto;
+  padding: 0;
+  background: whitesmok;
+}
+
+.ohtitle {
+  font-size: 20px;
+  line-height: 35px;
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 20px;
+}
+
+.progressdiv {
+  width: 100%;
+  float: left;
+}
+
+.progressbt {
+  width: 60px;
+  font-size: 12px;
+  float: left;
+  padding-top: 20px;
+  line-height: 28px;
+  text-align: left;
+}
+
+.progress01 {
+  width: 28.5%;
+  float: left;
+
+  margin-right: 1.5%;
+}
+
+.progress01 .progress01 {
+  font-size: 13px;
+  line-height: 28px;
+  color: #2c2c2c;
+  padding-top: 5px;
+  width: 100%;
+}
+
+.progreetitle {
+  width: 100%;
+  text-align: left;
+  padding-top: 10px;
+  font-size: 15px;
+  color: #333;
+  font-weight: bold;
+}
+
+.procont {
+  width: 100%;
+  height: 28px;
+}
+
+.protitle {
+  font-size: 14px;
+  line-height: 25px;
+  color: #464646;
+}
+
+.procont span {
+  float: left;
+  font-size: 10px;
+}
+
+.sta-main1 {
+  min-height: 842pt;
+  width: auto;
+  min-width: 842pt;
+  display: inline-block;
+  height: auto;
+  padding: 0;
+}
+
+.Page4CataLogClassp {
+  background-color: yellow;
+  width: 100%;
+  padding-left: 10px;
+  text-align: left;
+}
+
+.Page6Content {
+  height: 360px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+}
+
+.Page6Chartleft {
+  height: 98%;
+  border-top: 2px #d3d3d3 solid;
+  border-right: 2px #d3d3d3 solid;
+  width: 50%;
+}
+
+.Page6Chartleft:nth-child(2n) {
+  border-right: 0;
+}
+
+.Page6Chart {
+  height: 98%;
+  border-top: 2px #d3d3d3 solid;
+  width: 50%;
+}
+
+.Page9right {
+  height: 720px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tablefour {
+  width: 100%;
+  font-size: 13px;
+  border-color: #fff;
+}
+
+.tablefour thead tr td {
+  background: #4473c5;
+  color: #fff;
+  border-color: #fff;
+  padding: 3px 0;
+}
+
+.tablefour tbody tr td {
+  background: #c1c6db;
+  color: #333;
+  border-color: #fff;
+  padding: 3px 0;
+}
+
+.tablefour tbody tr:nth-child(2n) td {
+  background: #e9ecf5;
+  color: #333;
+  border-color: #fff;
+}
+
+.tablethree thead tr td,
+.tablethree tbody tr td {
+  padding: 3px 0;
+}

@@ -1,0 +1,96 @@
+<html lang="zh_cn">
+<head>
+    <meta charset="UTF-8">
+    <title>变量设置</title>
+    <link rel="stylesheet" href="layui-src/css/layui.css"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="bpmn-js/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="style/awesome/css/animate.css">
+    <link rel="stylesheet" href="style/awesome/css/style.css">
+<style>
+
+    body .demo-class .layui-layer-content {
+        padding: 3rem 3rem 0 3rem;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        height: 1px;
+    }
+
+    body .demo-class .layui-layer-btn {
+        margin-top: 0rem;
+    }
+    .layui-layer-btn .layui-layer-btn0 {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFFFFF;
+    }
+    body .demo-class .layui-layer-btn a {
+        background: #ff6a00;
+        border: 0px;
+    }
+
+    body .demo-class .layui-layer-btn .layui-layer-btn1 {
+        background: #afb611;
+        border: 0px;
+    }
+
+    .form-control:focus, .single-line:focus {
+        border-color: #1890ff !important;
+    }
+
+</style>
+
+</head>
+<body>
+
+<div ng-model="data" ht-load="${bpmModel}/flow/var/v1/defVarEdit?defId=181898&amp;varKey=f" class="ibox-content ng-pristine ng-untouched ng-valid ng-not-empty">
+    <div class="form-group"><label class="col-sm-4 control-label"> 节点:*</label>
+        <div class="col-sm-8">
+            <select class="form-control ng-pristine ng-valid ng-empty ng-touched " id="bpmVariableDef-nodeId">
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group"><label class="col-sm-4 control-label"> 变量名:*</label>
+        <div class="col-sm-8"><input type="text" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required data.bpmVariableDef.name"  id="data-bpmVariableDef-name"></div>
+    </div>
+    <div class="form-group"><label class="col-sm-4 control-label"> 变量Key:*</label>
+        <div class="col-sm-8"><input type="text" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required data.bpmVariableDef.varKey" id="data-bpmVariableDef-varKey"></div>
+    </div>
+    <div class="form-group"><label class="col-sm-4 control-label"> 数据类型:</label>
+        <div class="col-sm-8">
+            <select class="form-control ng-pristine ng-untouched ng-valid ng-not-empty " id="data-bpmVariableDef-dataType">
+                <option value="string">字符串</option>
+                <option value="int">整形</option>
+                <option value="float">浮点型</option>
+                <option value="double">双精度</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group"><label class="col-sm-4 control-label"> 是否必需:</label>
+        <div class="col-sm-8">
+            <select ng-model="data.bpmVariableDef.required" class="form-control ng-pristine ng-untouched ng-valid ng-not-empty data.bpmVariableDef.required" id="data-bpmVariableDef-required">
+                <option value="true">是</option>
+                <option value="false">否</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group"><label class="col-sm-4 control-label"> 缺省值:</label>
+        <div class="col-sm-8"><input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty data.bpmVariableDef.defaultVal" id="data-bpmVariableDef-defaultVal"></div>
+    </div>
+    <div class="form-group"><label class="col-sm-4 control-label"> 变量描述:</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty data.bpmVariableDef.description " id="data-bpmVariableDef-description">
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

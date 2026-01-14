@@ -1,0 +1,79 @@
+.fOUBvB {
+    position: absolute;
+    bottom: 120px;
+    right: 430px;
+    z-index: 20;
+}
+.fJsjxD {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 2;
+}
+.cutIrd {
+    display: flex;
+}
+.gVgIrW {
+    display: flex;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: rgb(83, 83, 83);
+    background-color: rgb(245, 245, 245);
+    box-shadow: rgba(0, 0, 0, 0.36) 0px 1px 2px 0px;
+    width: 130px;
+    padding: 5px;
+}
+.cdCgsx {
+    background-color: transparent;
+    color: inherit;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    margin: 0px 5px;
+    padding: 0px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+}
+
+.llrzhU {
+    border-top-style: initial;
+    border-right-style: initial;
+    border-bottom-style: initial;
+    border-top-color: initial;
+    border-right-color: initial;
+    border-bottom-color: initial;
+    flex: 0 1 auto;
+    border-width: 0px 0px 0px 1px;
+    border-image: initial;
+    border-left: 1px solid rgb(209, 209, 209);
+    margin: 0px 5px;
+}
+.cdCgsx {
+    background-color: transparent;
+    color: inherit;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    margin: 0px 5px;
+    padding: 0px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+}
+.hOCrTM {
+    color: white;
+    background-color: rgb(0, 191, 165);
+    cursor: pointer;
+    padding: 0px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    border-radius: 3px;
+    outline: none;
+}

@@ -1,0 +1,219 @@
+@charset "utf-8";
+
+/* CSS Document */
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+*,
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: "微软雅黑";
+     color: #fff;
+    font-size: 16px;
+}
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.clearfix:after,
+.clearfix:before {
+    display: table;
+    content: ' ';
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.pulll_left {
+    float: left;
+}
+
+.pulll_right {
+    float: right;
+}
+ul,li{list-style: none;}
+/* styles.css */
+.warpbody {
+       width: 1920px;
+    height: 980px;
+    overflow: hidden;
+    color: #fff;
+    font-size: 16px;
+    background: url(../images/rachbg1.png) top center no-repeat;
+    background-size: 100% 100%;
+    padding: 10px ;
+}
+.top{
+   background: url(../images/topbg.png) top center no-repeat;
+   height: 90px;
+    background-size: 100% auto;
+}
+.top p {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 5px;
+    text-shadow: 3px 3px 3px #5a9abf;
+    font-style: italic;
+    letter-spacing: 3px;
+}
+
+.mainbox {
+    padding: 0px 20px;
+}
+
+.nav1 {
+    margin-left: -6px;
+    margin-right: -6px;
+}
+.nav1 > li {
+  padding: 0 6px;
+  float: left;
+}
+.selecthd{text-align: left;}
+.filter-item {
+    display: flex;
+    flex-direction: column;padding: 5px 0;
+    margin-bottom: 15px;
+}
+.filterbg{ background: url(../images/preview.png);background-size: 100% 100%;}
+.filterbg1{ background: url(../images/preview1.png);background-size: 100% 100%;}
+.filterbgcenter{ background: url(../images/previecenterw.png);background-size: 100% 100%;}
+.filterbg1 .disease-info{text-align: right;padding-right: 20px;}
+.disease-info{padding-left: 30px;line-height: 35px;}
+.disease-info span{font-size: 20px;}
+.chartcard{width: 98%;height: 230px; margin-top:7px; margin-left: 5px;padding: 7px 0;}
+.stats-section{display: flex;padding-top:25px;flex-wrap: wrap;text-align: center;height: 230px;margin-top: 7px;}
+.imgbg{width: 64px;height: 64px; background: url(../images/cowiconbg.png);background-size: 100% 100%;padding-top: 10px;margin-left: 20px;}
+.imgbg img{width:25px;height: 25px;margin-top: 10px;}
+.stat-card{width: 50%;text-align: center; min-width: 166px;height: 78px;display: flex; }
+
+.stat-card h3{padding-top:15px;font-size: 16px;}
+.stat-card span{font-weight: bold;font-size: 24px; line-height: 35px;}
+.data-cards{display: flex; flex-wrap: wrap;}
+.data-card{width: 33.3%;display: flex;margin-bottom: 10px; }
+.statsbg{width: 82%;display: flex; margin: 0 auto; margin-bottom: 10px;background: url(../images/cowbg.png) left top no-repeat; background-size: 100% 100%;padding-left:8%;}
+.statsbg img{margin-top: 10px;margin-right: 10px;}
+.data-card img{width: 45px;height: 45px;}
+.cardtxt{height: 72px; margin-left: 5px;width: 160px;text-align: left;}
+.cardtxt h4{text-align: left; padding-top: 13px;}
+.cardtxt span{display: inline-block;color: #fff;font-weight: bold;padding-top: 1px;font-size: 18px;}
+/*谷哥滚动条样式*/
+
+.tblbody::-webkit-scrollbar {
+  width: 5px;
+  height: auto;
+  border-radius: 5px;
+  position: absolute;
+  right: -10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2a517d87;
+}
+::-webkit-scrollbar-track {
+  background-color: #0707072c;
+}
+
+.tablebox {
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  width: 92%;
+  height: calc(100% - 25px);
+  margin-top: 10px;
+}
+
+.tbl-header {
+  width: 100%;
+  height: 45px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 11;
+}
+
+.tbl-body {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.tablebox table {
+  width: 98%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+  height: 100%;
+  color: #5fc1ee;
+}
+
+.tablebox table caption {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+}
+.tablebox table th {
+  color: #fff;
+  height: 40px;
+  line-height: 38px;
+  font-size: 16px;
+  text-align: center;
+}
+.tablebox table td {
+  height: 30px;
+  color: #85d6ff;
+  text-align: center;
+}
+.tablebox table thead {
+  height: 40px;
+  background: url(../images/tbodybg.png);
+}
+.tablebox table tbody {
+  display: block;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 1001;
+}
+.tablebox table tfoot {
+  background-color: #79a5f2;
+  color: #fff;
+}
+.tablebox table thead tr,
+.tablebox table tbody tr,
+.tablebox table tfoot tr {
+  box-sizing: border-box;
+  table-layout: fixed;
+  display: table;
+  width: 100%;
+  font-size: 15px;
+}
+.tablebox table tbody tr:nth-of-type(even) {
+  background: #2a517d87;
+}
+.tablebox table tbody tr:nth-of-type(odd) {
+  background: transparent;
+}
+.tablebox table tbody tr td {
+  border-bottom: none;
+  font-size: 14px;
+}
+
+.tblbody {
+  position: relative;
+  top: 45px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1000;
+}
+.tblbody:hover {
+  overflow: auto;
+}

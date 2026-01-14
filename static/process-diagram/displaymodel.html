@@ -1,0 +1,746 @@
+<html>
+  <head>
+    <title>BPMN 2.0 display</title>
+    <link type="text/css" rel="stylesheet" href="./jquery.qtip.min.css" />
+    <link type="text/css" rel="stylesheet" href="./jquery.growl.css" />
+    <link type="text/css" rel="stylesheet" href="./jquery-confirm.min.css" />
+    <link type="text/css" rel="stylesheet" href="./displaymodel.css" />
+    <script type="text/javascript" src="./jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="./jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="./jquery.growl.js"></script>
+    <script type="text/javascript" src="./jquery-confirm.min.js"></script>
+    <script type="text/javascript" src="./raphael.min.js"></script>
+    <script type="text/javascript" src="./bpmn-draw.js"></script>
+    <script type="text/javascript" src="./bpmn-icons.js"></script>
+    <script type="text/javascript" src="./Polyline.js"></script>
+  </head>
+  <body>
+    <div class="modal-body modal-body-medium">
+      <!-- <div style="text-align: center">
+        <button type="button" id="changeStateButton" class="btn btn-sm btn-default" style="display:none">
+          Changestate
+        </button>
+      </div> -->
+      <div id="bpmnModel" style="margin-left:auto;margin-right:auto"></div>
+    </div>
+    <script type="text/javascript">
+      /* eslint-disable no-unused-vars */
+      const NORMAL_STROKE = 2
+      const SEQUENCEFLOW_STROKE = 2
+      const TASK_STROKE = 2
+      const CALL_ACTIVITY_STROKE = 4
+      const ENDEVENT_STROKE = 4
+      const CURRENT_ACTIVITY_STROKE = 4
+
+      const COMPLETED_COLOR = '#2674aa'
+      const TEXT_COLOR = '#373e48'
+      const CURRENT_COLOR = '#66AA66'
+      const HOVER_COLOR = '#d5bc01'
+      const ACTIVITY_STROKE_COLOR = '#000000'
+      const ACTIVITY_FILL_COLOR = '#ffffff'
+      const MAIN_STROKE_COLOR = '#585858'
+
+      const TEXT_PADDING = 3
+      const ARROW_WIDTH = 6
+      const MARKER_WIDTH = 12
+
+      const TASK_FONT = { font: '11px Arial', opacity: 1, fill: Raphael.rgb(0, 0, 0) }
+
+      // icons
+      const ICON_SIZE = 16
+      const ICON_PADDING = 4
+
+      let INITIAL_CANVAS_WIDTH
+      let INITIAL_CANVAS_HEIGHT
+
+      let paper
+      let migrationPaper
+      let viewBox
+      let viewBoxWidth
+      let viewBoxHeight
+
+      let canvasWidth
+      let canvasHeight
+
+      let definitionId
+      let instanceId
+      let historyInstanceId
+      let serverId
+      let flowData
+
+      let migrationDefinitionId = $('#targetModel').attr('data-migration-definition-id')
+
+      let elementsAdded = []
+      let elementsRemoved = []
+      let changeStateStartElementIds = []
+      let changeStateStartElements = []
+      let changeStateStartGlowElements = []
+      let changeStateEndElementIds = []
+      let changeStateEndElements = []
+      let changeStateEndGlowElements = []
+
+      let migrationMappedElements = []
+      let migrationMappedElementsText = []
+
+      let collapsedItemNavigation = []
+      let bpmnData
+      let migrationData
+
+      function _showTip(htmlNode, element) {
+        if (migrationDefinitionId && migrationDefinitionId.length > 0) return
+        let documentation = ''
+        if (element.name && element.name.length > 0) {
+          documentation += '<b>Name</b>: <i>' + element.name + '</i><br/><br/>'
+        }
+
+        let text
+        if (element.name && element.name.length > 0) {
+          text = element.name
+        } else {
+          text = element.id
+        }
+
+        htmlNode.qtip({
+          content: {
+            text: documentation,
+            title: {
+              text
+            }
+          },
+          position: {
+            my: 'top left',
+            at: 'bottom center',
+            viewport: $(window)
+          },
+          hide: {
+            fixed: true,
+            delay: 100,
+            event: 'click mouseleave'
+          },
+          style: {
+            classes: 'ui-tooltip-kisbpm-bpmn'
+          }
+        })
+      }
+
+      function _buildNavigationTree() {
+        let navigationUrl = '| <a href="javascript:_navigateTo(\'FLOWABLE_ROOT_PROCESS\')">Root</a>'
+
+        for (let i = 0; i < collapsedItemNavigation.length; i++) {
+          navigationUrl +=
+            ' > <a href="javascript:_navigateTo(\'' +
+            collapsedItemNavigation[i].id +
+            '\')">' +
+            collapsedItemNavigation[i].name +
+            '</a>'
+        }
+
+        $('#navigationTree').html(navigationUrl)
+      }
+
+      function _expandCollapsedElement(element) {
+        if (bpmnData.collapsed) {
+          for (let i = 0; i < bpmnData.collapsed.length; i++) {
+            const collapsedItem = bpmnData.collapsed[i]
+            if (element.id === collapsedItem.id) {
+              paper.clear()
+
+              const modelElements = collapsedItem.elements
+              for (let i = 0; i < modelElements.length; i++) {
+                const subElement = modelElements[i]
+                const drawFunction = eval('_draw' + subElement.type)
+                drawFunction(subElement)
+              }
+
+              if (collapsedItem.flows) {
+                for (let i = 0; i < collapsedItem.flows.length; i++) {
+                  const subFlow = collapsedItem.flows[i]
+                  _drawFlow(subFlow)
+                }
+              }
+
+              let collapsedName
+              if (element.name) {
+                collapsedName = element.name
+              } else {
+                collapsedName = 'sub process ' + element.id
+              }
+
+              collapsedItemNavigation.push({
+                id: element.id,
+                name: collapsedName
+              })
+
+              _buildNavigationTree()
+
+              break
+            }
+          }
+        }
+      }
+
+      function _navigateTo(elementId) {
+        let modelElements
+        let modelFlows
+        newCollapsedItemNavigation = []
+
+        if (elementId === 'FLOWABLE_ROOT_PROCESS') {
+          modelElements = bpmnData.elements
+          modelFlows = bpmnData.flows
+        } else {
+          for (let i = 0; i < bpmnData.collapsed.length; i++) {
+            const collapsedItem = bpmnData.collapsed[i]
+
+            let collapsedName
+            for (let j = 0; j < collapsedItemNavigation.length; j++) {
+              if (elementId === collapsedItemNavigation[j].id) {
+                collapsedName = collapsedItemNavigation[j].name
+                break
+              }
+            }
+
+            if (!collapsedName) {
+              continue
+            }
+
+            newCollapsedItemNavigation.push({
+              id: collapsedItem.id,
+              name: collapsedName
+            })
+
+            if (elementId === collapsedItem.id) {
+              modelElements = collapsedItem.elements
+              modelFlows = collapsedItem.flows
+              break
+            }
+          }
+        }
+
+        if (modelElements) {
+          paper.clear()
+
+          for (let i = 0; i < modelElements.length; i++) {
+            const subElement = modelElements[i]
+            const drawFunction = eval('_draw' + subElement.type)
+            drawFunction(subElement)
+          }
+
+          if (modelFlows) {
+            for (let i = 0; i < modelFlows.length; i++) {
+              const subFlow = modelFlows[i]
+              _drawFlow(subFlow)
+            }
+          }
+
+          collapsedItemNavigation = newCollapsedItemNavigation
+
+          _buildNavigationTree()
+        }
+      }
+
+      function _addHoverLogic(element, type, defaultColor, isMigrationModelElement, currentPaper) {
+        const strokeColor = _bpmnGetColor(element, defaultColor)
+        let topBodyRect
+        if (type === 'rect') {
+          topBodyRect = currentPaper.rect(element.x, element.y, element.width, element.height)
+        } else if (type === 'circle') {
+          const x = element.x + element.width / 2
+          const y = element.y + element.height / 2
+          topBodyRect = currentPaper.circle(x, y, 15)
+        } else if (type === 'rhombus') {
+          topBodyRect = currentPaper.path(
+            'M' +
+              element.x +
+              ' ' +
+              (element.y + element.height / 2) +
+              'L' +
+              (element.x + element.width / 2) +
+              ' ' +
+              (element.y + element.height) +
+              'L' +
+              (element.x + element.width) +
+              ' ' +
+              (element.y + element.height / 2) +
+              'L' +
+              (element.x + element.width / 2) +
+              ' ' +
+              element.y +
+              'z'
+          )
+        }
+
+        if (isMigrationModelElement) {
+          topBodyRect.attr({
+            opacity: 0,
+            stroke: 'none',
+            fill: '#ffffff'
+          })
+
+          topBodyRect.click(() => {
+            const endElementIndex = $.inArray(element.id, changeStateEndElementIds)
+            if (endElementIndex >= 0) {
+              const glowElement = changeStateEndGlowElements[endElementIndex]
+              glowElement.remove()
+
+              changeStateEndGlowElements.splice(endElementIndex, 1)
+              changeStateEndElementIds.splice(endElementIndex, 1)
+              changeStateEndElements.splice(endElementIndex, 1)
+            } else {
+              const endGlowElement = topBodyRect.glow({ color: 'red' })
+              changeStateEndGlowElements.push(endGlowElement)
+              changeStateEndElementIds.push(element.id)
+              changeStateEndElements.push(element)
+            }
+
+            if (changeStateStartElements.length > 0 && changeStateEndElements.length > 0) {
+              $('#addMappingButton').show()
+            } else {
+              $('#addMappingButton').hide()
+            }
+          })
+        } else {
+          let opacity = 0
+          let fillColor = '#ffffff'
+          if ($.inArray(element.id, elementsAdded) >= 0) {
+            opacity = 0.2
+            fillColor = 'green'
+          }
+
+          if ($.inArray(element.id, elementsRemoved) >= 0) {
+            opacity = 0.2
+            fillColor = 'red'
+          }
+
+          topBodyRect.attr({
+            opacity,
+            stroke: 'none',
+            fill: fillColor
+          })
+          _showTip($(topBodyRect.node), element)
+
+          topBodyRect.click(() => {
+            if (migrationDefinitionId && migrationDefinitionId.length > 0) {
+              const startElementIndex = $.inArray(element.id, changeStateStartElementIds)
+              if (startElementIndex >= 0) {
+                const glowElement = changeStateStartGlowElements[startElementIndex]
+                glowElement.remove()
+
+                changeStateStartGlowElements.splice(startElementIndex, 1)
+                changeStateStartElementIds.splice(startElementIndex, 1)
+                changeStateStartElements.splice(startElementIndex, 1)
+              } else {
+                const startGlowElement = topBodyRect.glow({ color: 'blue' })
+                changeStateStartGlowElements.push(startGlowElement)
+                changeStateStartElementIds.push(element.id)
+                changeStateStartElements.push(element)
+              }
+
+              if (changeStateStartElements.length > 0 && changeStateEndElements.length > 0) {
+                $('#addMappingButton').show()
+              } else {
+                $('#addMappingButton').hide()
+              }
+            } else {
+              const startElementIndex = $.inArray(element.id, changeStateStartElementIds)
+              const endElementIndex = $.inArray(element.id, changeStateEndElementIds)
+              if (startElementIndex >= 0) {
+                const glowElement = changeStateStartGlowElements[startElementIndex]
+                glowElement.remove()
+
+                changeStateStartGlowElements.splice(startElementIndex, 1)
+                changeStateStartElementIds.splice(startElementIndex, 1)
+                changeStateStartElements.splice(startElementIndex, 1)
+              } else if (endElementIndex >= 0) {
+                const glowElement = changeStateEndGlowElements[endElementIndex]
+                glowElement.remove()
+
+                changeStateEndGlowElements.splice(endElementIndex, 1)
+                changeStateEndElementIds.splice(endElementIndex, 1)
+                changeStateEndElements.splice(endElementIndex, 1)
+              } else {
+                if (element.current) {
+                  const startGlowElement = topBodyRect.glow({ color: 'blue' })
+                  changeStateStartGlowElements.push(startGlowElement)
+                  changeStateStartElementIds.push(element.id)
+                  changeStateStartElements.push(element)
+                } else {
+                  const endGlowElement = topBodyRect.glow({ color: 'red' })
+                  changeStateEndGlowElements.push(endGlowElement)
+                  changeStateEndElementIds.push(element.id)
+                  changeStateEndElements.push(element)
+                }
+              }
+
+              if (changeStateStartElements.length > 0 && changeStateEndElements.length > 0) {
+                $('#changeStateButton').show()
+              } else {
+                $('#changeStateButton').hide()
+              }
+            }
+          })
+        }
+
+        topBodyRect.mouseover(() => {
+          currentPaper.getById(element.id).attr({ stroke: HOVER_COLOR })
+        })
+
+        topBodyRect.mouseout(() => {
+          currentPaper.getById(element.id).attr({ stroke: strokeColor })
+        })
+      }
+
+      function _zoom(zoomIn) {
+        let tmpCanvasWidth, tmpCanvasHeight
+        if (zoomIn) {
+          tmpCanvasWidth = canvasWidth * (1.0 / 0.9)
+          tmpCanvasHeight = canvasHeight * (1.0 / 0.9)
+        } else {
+          tmpCanvasWidth = canvasWidth * (1.0 / 1.1)
+          tmpCanvasHeight = canvasHeight * (1.0 / 1.1)
+        }
+
+        if (tmpCanvasWidth !== canvasWidth || tmpCanvasHeight !== canvasHeight) {
+          canvasWidth = tmpCanvasWidth
+          canvasHeight = tmpCanvasHeight
+          paper.setSize(canvasWidth, canvasHeight)
+        }
+      }
+
+      function _showProcessDiagram() {
+        const data = flowData
+        if (!data.elements || data.elements.length === 0) return
+        INITIAL_CANVAS_WIDTH = data.diagramWidth + 20
+        INITIAL_CANVAS_HEIGHT = data.diagramHeight + 50
+        canvasWidth = INITIAL_CANVAS_WIDTH
+        canvasHeight = INITIAL_CANVAS_HEIGHT
+        viewBoxWidth = INITIAL_CANVAS_WIDTH
+        viewBoxHeight = INITIAL_CANVAS_HEIGHT
+
+        let x = 0
+        if ($(window).width() > canvasWidth) {
+          x = ($(window).width() - canvasWidth) / 2 - data.diagramBeginX / 2
+        }
+
+        const canvasValue = 'bpmnModel'
+        $('#' + canvasValue).width(INITIAL_CANVAS_WIDTH)
+        $('#' + canvasValue).height(INITIAL_CANVAS_HEIGHT)
+        paper = Raphael(document.getElementById(canvasValue), canvasWidth, canvasHeight)
+        paper.setViewBox(0, 0, viewBoxWidth, viewBoxHeight, false)
+        paper.renderfix()
+
+        if (data.pools) {
+          for (let i = 0; i < data.pools.length; i++) {
+            const pool = data.pools[i]
+            _drawPool(pool, false, paper)
+          }
+        }
+
+        const modelElements = data.elements
+        for (let i = 0; i < modelElements.length; i++) {
+          const element = modelElements[i]
+          try {
+            const drawFunction = eval('_draw' + element.type)
+            drawFunction(element, false, paper)
+          } catch (err) {
+            console.warn(err)
+          }
+        }
+
+        if (data.flows) {
+          for (let i = 0; i < data.flows.length; i++) {
+            const flow = data.flows[i]
+            _drawFlow(flow, paper)
+          }
+        }
+
+        bpmnData = data
+
+        if (migrationDefinitionId && migrationDefinitionId.length > 0) {
+          migrationRequest = $.ajax({
+            type: 'get',
+            url:
+              './app/rest/admin/process-definitions/' +
+              migrationDefinitionId +
+              '/model-json?nocaching=' +
+              new Date().getTime()
+          })
+
+          migrationRequest.success(data => {
+            if (!data.elements || data.elements.length === 0) return
+
+            INITIAL_CANVAS_WIDTH = data.diagramWidth + 20
+            INITIAL_CANVAS_HEIGHT = data.diagramHeight + 50
+            canvasWidth = INITIAL_CANVAS_WIDTH
+            canvasHeight = INITIAL_CANVAS_HEIGHT
+            viewBoxWidth = INITIAL_CANVAS_WIDTH
+            viewBoxHeight = INITIAL_CANVAS_HEIGHT
+
+            let x = 0
+            if ($(window).width() > canvasWidth) {
+              x = ($(window).width() - canvasWidth) / 2 - data.diagramBeginX / 2
+            }
+
+            const canvasValue = 'targetModel'
+
+            $('#' + canvasValue).width(INITIAL_CANVAS_WIDTH)
+            $('#' + canvasValue).height(INITIAL_CANVAS_HEIGHT)
+            migrationPaper = Raphael(document.getElementById(canvasValue), canvasWidth, canvasHeight)
+            migrationPaper.setViewBox(0, 0, viewBoxWidth, viewBoxHeight, false)
+            migrationPaper.renderfix()
+
+            if (data.pools) {
+              for (let i = 0; i < data.pools.length; i++) {
+                const pool = data.pools[i]
+                _drawPool(pool, true, migrationPaper)
+              }
+            }
+
+            const modelElements = data.elements
+            for (let i = 0; i < modelElements.length; i++) {
+              const element = modelElements[i]
+              try {
+                const drawFunction = eval('_draw' + element.type)
+                drawFunction(element, true, migrationPaper)
+              } catch (err) {
+                console.warn(err)
+              }
+            }
+
+            if (data.flows) {
+              for (let i = 0; i < data.flows.length; i++) {
+                const flow = data.flows[i]
+                _drawFlow(flow, migrationPaper)
+              }
+            }
+
+            migrationData = data
+          })
+        }
+      }
+
+      $(document).ready(() => {
+        $('#changeStateButton').on('click', e => {
+          e.preventDefault()
+
+          let startElementText = ''
+          for (let i = 0; i < changeStateStartElements.length; i++) {
+            if (startElementText.length > 0) {
+              startElementText += ', '
+            }
+            startElementText += changeStateStartElements[i].name
+          }
+
+          let endElementText = ''
+          for (let i = 0; i < changeStateEndElements.length; i++) {
+            if (endElementText.length > 0) {
+              endElementText += ', '
+            }
+            endElementText += changeStateEndElements[i].name
+          }
+
+          $.confirm({
+            title: 'Change current activity?',
+            content:
+              'Are you sure you want to move the current state from (' +
+              startElementText +
+              ') to (' +
+              endElementText +
+              ')',
+            buttons: {
+              confirm() {
+                $.ajax({
+                  type: 'post',
+                  url: './app/rest/admin/process-instances/' + instanceId + '/change-state',
+                  contentType: 'application/json; charset=utf-8',
+                  data: JSON.stringify({
+                    cancelActivityIds: changeStateStartElementIds,
+                    startActivityIds: changeStateEndElementIds
+                  }),
+                  success() {
+                    paper.clear()
+                    $('#changeStateButton').hide()
+                    _showProcessDiagram()
+                  }
+                })
+              },
+              cancel() {
+                //
+              }
+            }
+          })
+        })
+
+        $('#addMappingButton').on('click', e => {
+          e.preventDefault()
+
+          const fromActivityIds = []
+          let startElementText = ''
+          for (let i = 0; i < changeStateStartElements.length; i++) {
+            if (startElementText.length > 0) {
+              startElementText += ', '
+            }
+
+            startElementText += changeStateStartElements[i].name
+            fromActivityIds.push(changeStateStartElements[i].id)
+          }
+
+          const toActivityIds = []
+          let endElementText = ''
+          for (let i = 0; i < changeStateEndElements.length; i++) {
+            if (endElementText.length > 0) {
+              endElementText += ', '
+            }
+            endElementText += changeStateEndElements[i].name
+            toActivityIds.push(changeStateEndElements[i].id)
+          }
+
+          migrationMappedElements.push({
+            fromActivityIds,
+            toActivityIds
+          })
+
+          migrationMappedElementsText.push({
+            startElementText,
+            endElementText
+          })
+
+          let mappingValuesText = ''
+          let counter = 1
+          for (let i = 0; i < migrationMappedElementsText.length; i++) {
+            if (mappingValuesText.length > 0) {
+              mappingValuesText += '  -  '
+            }
+            mappingValuesText +=
+              'Mapping ' +
+              counter +
+              ' from (' +
+              migrationMappedElementsText[i].startElementText +
+              ') to (' +
+              migrationMappedElementsText[i].endElementText +
+              ')'
+
+            counter++
+          }
+          $('#currentMappingValues').text(mappingValuesText)
+
+          $('#executeMigrationDocument').show()
+          $('#addMappingButton').hide()
+        })
+
+        $('#executeMigrationDocument').on('click', e => {
+          e.preventDefault()
+
+          const migrationDocumentPayload = {
+            toProcessDefinitionId: migrationDefinitionId
+          }
+
+          const mappingPayload = []
+          for (let i = 0; i < migrationMappedElements.length; i++) {
+            const mappedElement = migrationMappedElements[i]
+            const mappingValue = {}
+            if (mappedElement.fromActivityIds.length === 1) {
+              mappingValue.fromActivityId = mappedElement.fromActivityIds[0]
+            } else {
+              mappingValue.fromActivityIds = mappedElement.fromActivityIds
+            }
+
+            if (mappedElement.toActivityIds.length === 1) {
+              mappingValue.toActivityId = mappedElement.toActivityIds[0]
+            } else {
+              mappingValue.toActivityIds = mappedElement.toActivityIds
+            }
+
+            mappingPayload.push(mappingValue)
+          }
+
+          migrationDocumentPayload.activityMappings = mappingPayload
+
+          if (instanceId != null) {
+            $.confirm({
+              title: 'Migrate process instance',
+              content: 'Are you sure you want to migrate the process instance with the defined mappings',
+              buttons: {
+                confirm() {
+                  $.ajax({
+                    type: 'post',
+                    url: './app/rest/admin/process-instances/' + instanceId + '/migrate',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(migrationDocumentPayload),
+                    success() {
+                      paper.clear()
+                      migrationPaper.clear()
+                      $('#targetModel').removeAttr('data-migration-definition-id')
+                      definitionId = migrationDefinitionId
+                      migrationDefinitionId = undefined
+                      migrationMappedElementsText = []
+                      migrationMappedElements = []
+                      $('#targetModel').hide()
+                      $('#migrationDivider').hide()
+                      $('#executeMigrationDocument').hide()
+                      $('#currentMappingValues').hide()
+                      _showProcessDiagram()
+                    }
+                  })
+                },
+                cancel() {
+                  //
+                }
+              }
+            })
+          } else {
+            $.confirm({
+              title: 'Migrate all instances of process definition',
+              content:
+                'Are you sure you want to migrate all instances of the process definition with the defined mappings',
+              buttons: {
+                confirm() {
+                  $.ajax({
+                    type: 'post',
+                    url: './app/rest/admin/process-definitions/' + definitionId + '/batch-migrate',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(migrationDocumentPayload),
+                    success() {
+                      paper.clear()
+                      migrationPaper.clear()
+                      $('#targetModel').removeAttr('data-migration-definition-id')
+                      definitionId = migrationDefinitionId
+                      migrationDefinitionId = undefined
+                      migrationMappedElementsText = []
+                      migrationMappedElements = []
+                      $('#targetModel').hide()
+                      $('#migrationDivider').hide()
+                      $('#executeMigrationDocument').hide()
+                      $('#currentMappingValues').hide()
+                    }
+                  })
+                },
+                cancel() {
+                  //
+                }
+              }
+            })
+          }
+        })
+      })
+
+      elementsAdded = []
+      elementsRemoved = []
+      changeStateStartElementIds = []
+      changeStateStartElements = []
+      changeStateStartGlowElements = []
+      changeStateEndElementIds = []
+      changeStateEndElements = []
+      changeStateEndGlowElements = []
+
+      migrationMappedElements = []
+      migrationMappedElementsText = []
+
+      window.addEventListener('message', event => {
+        if (event && event.data) {
+          flowData = event.data
+          _showProcessDiagram()
+        }
+      })
+    </script>
+  </body>
+</html>

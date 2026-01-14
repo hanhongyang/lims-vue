@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" >
+    <circle cx="30" cy="50" r="20" stroke="#00a61e"  fill="#00a61e" />
+    <text x="27" y="55"  class="txt" stroke="#ffffff">1</text>
+
+</svg>
+<button>Animate!</button>
+
+<svg version="1.1" id="Layer_1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" viewBox="0 0 870 496" xml:space="preserve">
+
+    <path id="somePath" fill="transparent" stroke="blue" stroke-width="5" d="m  215,177L270,177 " style="fill: none;stroke-width: 2px;stroke: black;stroke-linejoin: round;marker-end: url(&quot;#sequenceflow-end-white-black-2f0usqn4e1bf8ryruwmod3ca0&quot;);"></path>
+
+    <path id="somePath2"  d="m  370,177L430,177 " style="fill: none; stroke-width: 2px; stroke: black; stroke-linejoin: round; marker-end: url(&quot;#sequenceflow-end-white-black-4zoiz1btbninn1zvaqv91xr2f&quot;);"></path>
+    <image id="someImage" width="10px" height="10px" xlink:href="coolboy.jpg" />
+</svg>
+
+
+</body>
+
+<script>
+    var troll = document.querySelector('#someImage');
+    var startOfPath;
+    var path;
+    var ai=[];
+    animation("#somePath")
+    function animation(pathDomId) {
+         path = document.querySelector(pathDomId);
+        ai.push(pathDomId)
+        var button = document.querySelector('button');
+         startOfPath = path.getPointAtLength(0);
+        var pathLength = path.getTotalLength();
+
+        // how many frames we want per second
+        var fps = 60;
+        // how long should the animation take in seconds
+        var animationDuration = 3;
+        // how many frames will there be in total
+        var totalFrames = fps * animationDuration;
+        resetTroll();
+            button.setAttribute('disabled', true);
+            resetTroll();
+
+            // point distance from start of the path
+            var pointDistance = 0;
+            // how much distance should be covered in one animation frame
+            var frameDistance = pathLength / fps / animationDuration;
+
+            // each frame will move the object by a little by little, creating an animation queue
+            for (var i = 0; i < totalFrames; i++) {
+                pointDistance = frameDistance * i;
+                setTimeout(createAnimFrame(pointDistance), 1000 / fps * i);
+            }
+
+
+            // re-enable the button
+            setTimeout(function() {
+                button.removeAttribute('disabled');
+                if (ai.length<2){
+                    animation("#somePath2")
+
+                }
+
+            }, animationDuration * 1000);
+
+    }
+
+
+    // generates a function that will move object to a certain distance on path
+    function createAnimFrame(distance) {
+        return function() {
+            var point = path.getPointAtLength(distance);
+            troll.setAttribute('x', point.x - 12);
+            troll.setAttribute('y', point.y - 12);
+        };
+    }
+
+    // puts the object to the start of the path
+    function resetTroll() {
+        troll.setAttribute('x', startOfPath.x - 12);
+        troll.setAttribute('y', startOfPath.y - 12);
+    }
+
+</script>
+</html>

@@ -1,0 +1,66 @@
+{
+  "_from": "qtip@0.0.4",
+  "_id": "qtip@0.0.4",
+  "_inBundle": false,
+  "_integrity": "sha1-9qNZ5mXcSOtDkhQ1yrfr9xpWIR0=",
+  "_location": "/qtip",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "qtip@0.0.4",
+    "name": "qtip",
+    "escapedName": "qtip",
+    "rawSpec": "0.0.4",
+    "saveSpec": null,
+    "fetchSpec": "0.0.4"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/qtip/-/qtip-0.0.4.tgz",
+  "_shasum": "f6a359e665dc48eb43921435cab7ebf71a56211d",
+  "_spec": "qtip@0.0.4",
+  "_where": "/Users/zhangzhixiang/Documents/workSpaceH5/headmap",
+  "author": {
+    "name": "Boris Cherny",
+    "email": "boris@performancejs.com"
+  },
+  "bugs": {
+    "url": "https://github.com/eighttrackmind/qtip/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "pretty, mobile-friendly tooltips",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-umd": "~1.3.0",
+    "stylus": "~0.38.0"
+  },
+  "homepage": "https://github.com/eighttrackmind/qtip#readme",
+  "keywords": [
+    "tooltip",
+    "popup",
+    "tip",
+    "help",
+    "hover",
+    "ios",
+    "android",
+    "mobile",
+    "interface",
+    "ui"
+  ],
+  "license": "MIT",
+  "main": "qtip.js",
+  "name": "qtip",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eighttrackmind/qtip.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.4"
+}

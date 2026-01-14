@@ -1,0 +1,43 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>呼吸效果测试</title>
+    <meta content="width=device-width;initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+
+
+<div id="map_canvas">
+
+    <svg id="svgBack"  version="1.1" width="400" height="400"style="border:1px solid #000" preserveAspectRatio="xMinYMin meet"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400">
+
+    </svg>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(function(){
+
+        var currentX=200;
+        var currentY=200;
+        var html = "<circle cx='"+currentX+"' cy='"+currentY+"' r='5' stroke='blue' stroke-width='0' fill='blue'> "+
+            "<animate id='ani1' attributeName='fill-opacity'  attributeType='XML' begin='0s;ani2.end' dur='2s' from='1' to='0.4' fill='freeze'/>"+
+            "<animate id='ani2' attributeName='fill-opacity'  attributeType='XML' begin='ani1.end' dur='2s' from='0.4' to='1' fill='freeze'/>"+
+            "</circle>";
+        $("#svgBack").html(html);
+
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<div id="qtip-0" class="qtip qtip-default qtip-default qtip qtip-bootstrap qtip-shadow qtip-pos-lt qtip-fixed">
+    <div class="qtip-titlebar">
+        <div id="qtip-0-title" class="qtip-title" aria-atomic="true">任务审批详情</div>
+    </div>
+    <div class="qtip-content" id="qtip-0-content" aria-atomic="true">
+        <ul class="opinion-container-ul no-padding ng-scope" style="display: block; visibility: visible;">
+            <li ng-repeat="opinion in nodeOpinion.result.data" class="ng-scope">
+                <div class="m-sm">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th width="90">任务名称</th>
+                            <td width="150" class="ng-binding">用户任务3</td>
+                        </tr>
+                        <tr ng-show="opinion.auditor">
+                            <th>执行人</th>
+                            <td><span class="owner-span">							<a href="javascript:void(0)"
+                                                                                        class="ng-binding">东绍祺</a>						</span>
+                            </td>
+                        </tr>
+                        <tr ng-show="!opinion.auditor" class="ng-hide">
+                            <th><label class="fa fa-question-circle-o" tooltip-placement="right"
+                                       uib-tooltip="有资格审批的用户及用户组"> 候选人</label></th>
+                            <td>
+                                <div class="owner-div">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>开始时间</th>
+                            <td style="font-size:11px;" class="ng-binding">2019-08-27 13:53:51</td>
+                        </tr>
+                        <tr>
+                            <th>结束时间</th>
+                            <td style="font-size:11px;" class="ng-binding">2019-08-27 13:53:51</td>
+                        </tr>
+                        <tr>
+                            <th>审批用时</th>
+                            <td class="ng-binding"></td>
+                        </tr>
+                        <tr>
+                            <th>状态</th>
+                            <td class="ng-binding">跳过执行</td>
+                        </tr>
+                        <tr>
+                            <th>意见</th>
+                            <td class="ng-binding">跳过第一个任务节点</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
